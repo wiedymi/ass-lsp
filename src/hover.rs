@@ -145,7 +145,7 @@ impl HoverProvider {
             "\\pbo" => Some("**Drawing Baseline Offset**\n\n`\\pbo<offset>`\n\nVertical offset for drawing coordinates.".to_string()),
             "\\q" => Some("**Wrap Style**\n\n`\\q<0-3>`\n\nText wrapping style:\n0=smart wrap, 1=end-of-line wrap, 2=no wrap, 3=smart wrap with lower line wider".to_string()),
             "\\r" => Some("**Reset**\n\n`\\r[style]`\n\nResets all override tags to the style defaults. Optional style name.".to_string()),
-            _ => Some(format!("**ASS Override Tag**\n\n`{}`\n\nAdvanced SubStation Alpha formatting tag.", tag)),
+            _ => Some(format!("**ASS Override Tag**\n\n`{tag}`\n\nAdvanced SubStation Alpha formatting tag.")),
         }
     }
 
@@ -162,14 +162,13 @@ impl HoverProvider {
                         let total_ms =
                             hours * 3600000 + minutes * 60000 + seconds * 1000 + centiseconds * 10;
                         return Some(format!(
-                            "**Timestamp**\n\n`{}`\n\nTotal duration: {}ms\n{}h {}m {}s {}cs",
-                            time, total_ms, hours, minutes, seconds, centiseconds
+                            "**Timestamp**\n\n`{time}`\n\nTotal duration: {total_ms}ms\n{hours}h {minutes}m {seconds}s {centiseconds}cs"
                         ));
                     }
                 }
             }
         }
-        Some(format!("**Timestamp**\n\n`{}`\n\nFormat: H:MM:SS.CC", time))
+        Some(format!("**Timestamp**\n\n`{time}`\n\nFormat: H:MM:SS.CC"))
     }
 
     fn get_color_info(&self, color: &str) -> Option<String> {
@@ -188,14 +187,12 @@ impl HoverProvider {
                 };
 
                 return Some(format!(
-                    "**Color Value**\n\n`{}`\n\nRGB: ({}, {}, {}){}\nBGR Format (Blue-Green-Red)",
-                    color, r, g, b, alpha
+                    "**Color Value**\n\n`{color}`\n\nRGB: ({r}, {g}, {b}){alpha}\nBGR Format (Blue-Green-Red)"
                 ));
             }
         }
         Some(format!(
-            "**Color Value**\n\n`{}`\n\nASS color in BGR hexadecimal format",
-            color
+            "**Color Value**\n\n`{color}`\n\nASS color in BGR hexadecimal format"
         ))
     }
 
@@ -206,7 +203,7 @@ impl HoverProvider {
             "[Events]" => Some("**Events Section**\n\nContains the actual subtitle dialogue, comments, and timing information.".to_string()),
             "[Fonts]" => Some("**Fonts Section**\n\nOptional section for embedding font files directly in the subtitle script.".to_string()),
             "[Graphics]" => Some("**Graphics Section**\n\nOptional section for embedding image files directly in the subtitle script.".to_string()),
-            _ => Some(format!("**Section Header**\n\n`{}`\n\nCustom section in the ASS script.", section)),
+            _ => Some(format!("**Section Header**\n\n`{section}`\n\nCustom section in the ASS script.")),
         }
     }
 
@@ -220,7 +217,7 @@ impl HoverProvider {
             "ScaledBorderAndShadow" => Some("**Scaled Border and Shadow**\n\nWhether borders and shadows scale with video resolution (yes/no).".to_string()),
             "Video File" => Some("**Video File**\n\nPath to the associated video file.".to_string()),
             "Audio File" => Some("**Audio File**\n\nPath to the associated audio file.".to_string()),
-            _ => Some(format!("**Script Info Property**\n\n`{}`\n\nScript metadata property.", key)),
+            _ => Some(format!("**Script Info Property**\n\n`{key}`\n\nScript metadata property.")),
         }
     }
 

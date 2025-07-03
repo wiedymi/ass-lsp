@@ -187,7 +187,7 @@ impl CompletionProvider {
                 label: key.to_string(),
                 kind: Some(CompletionItemKind::PROPERTY),
                 detail: Some("Script Info Property".to_string()),
-                insert_text: Some(format!("{}: $0", key)),
+                insert_text: Some(format!("{key}: $0")),
                 insert_text_format: Some(InsertTextFormat::SNIPPET),
                 ..Default::default()
             })
@@ -317,7 +317,7 @@ impl CompletionProvider {
             "\\an" => "\\anN - Sets alignment using numpad notation (1-9)".to_string(),
             "\\k" => "\\kDuration - Karaoke timing in centiseconds".to_string(),
             "\\t" => "\\t(tags) or \\t(t1,t2,tags) - Transforms tags over time".to_string(),
-            _ => format!("{} - ASS override tag", tag),
+            _ => format!("{tag} - ASS override tag"),
         }
     }
 
@@ -325,10 +325,10 @@ impl CompletionProvider {
         match tag {
             "\\pos" => "\\pos(${1:x},${2:y})".to_string(),
             "\\move" => "\\move(${1:x1},${2:y1},${3:x2},${4:y2})".to_string(),
-            "\\c" | "\\1c" | "\\2c" | "\\3c" | "\\4c" => format!("{}${{1:&Hffffff&}}", tag),
+            "\\c" | "\\1c" | "\\2c" | "\\3c" | "\\4c" => format!("{tag}${{1:&Hffffff&}}"),
             "\\fn" => "\\fn${1:Arial}".to_string(),
             "\\fs" => "\\fs${1:20}".to_string(),
-            "\\b" | "\\i" | "\\u" | "\\s" => format!("{}${{1:1}}", tag),
+            "\\b" | "\\i" | "\\u" | "\\s" => format!("{tag}${{1:1}}"),
             "\\an" => "\\an${1:2}".to_string(),
             "\\k" => "\\k${1:100}".to_string(),
             "\\t" => "\\t(${1:tags})".to_string(),

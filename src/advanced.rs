@@ -79,13 +79,13 @@ impl AdvancedFeatures {
         for (name, style) in &self.styles {
             if let Some(parent) = &style.parent {
                 if self.has_circular_reference(name, parent, &mut Vec::new()) {
-                    warnings.push(format!("Circular style inheritance detected: {}", name));
+                    warnings.push(format!("Circular style inheritance detected: {name}"));
                 }
             }
 
             // Check for unused properties
             if style.properties.is_empty() {
-                warnings.push(format!("Style '{}' has no properties defined", name));
+                warnings.push(format!("Style '{name}' has no properties defined"));
             }
         }
 
@@ -109,7 +109,7 @@ impl AdvancedFeatures {
 
         // Parse style properties (simplified for demonstration)
         for (i, part) in parts.iter().enumerate().skip(1) {
-            properties.insert(format!("prop_{}", i), part.trim().to_string());
+            properties.insert(format!("prop_{i}"), part.trim().to_string());
         }
 
         Some(StyleInheritance {

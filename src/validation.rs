@@ -54,7 +54,7 @@ impl ValidationProvider {
                     code: Some(NumberOrString::String("missing_section".to_string())),
                     code_description: None,
                     source: Some("ass-lsp".to_string()),
-                    message: format!("Missing required section: [{}]", required),
+                    message: format!("Missing required section: [{required}]"),
                     related_information: None,
                     tags: None,
                     data: None,
