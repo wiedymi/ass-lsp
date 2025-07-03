@@ -1,0 +1,81 @@
+{
+  "contributes": {
+    "languages": [
+      {
+        "id": "ass",
+        "aliases": ["Advanced SubStation Alpha", "ASS"],
+        "extensions": [".ass", ".ssa"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ass",
+        "scopeName": "source.ass",
+        "path": "./syntaxes/ass.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "ASS LSP",
+      "properties": {
+        "ass-lsp.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable ASS LSP server"
+        },
+        "ass-lsp.path": {
+          "type": "string",
+          "default": "ass-lsp",
+          "description": "Path to the ASS LSP server executable"
+        },
+        "ass-lsp.trace.server": {
+          "type": "string",
+          "enum": ["off", "messages", "verbose"],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the ASS LSP server"
+        }
+      }
+    }
+  },
+  "settings": {
+    "files.associations": {
+      "*.ass": "ass",
+      "*.ssa": "ass"
+    },
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace",
+    "editor.wordBasedSuggestions": false
+  },
+  "languageServerExample": {
+    "command": "ass-lsp",
+    "args": [],
+    "filetypes": ["ass"],
+    "initializationOptions": {},
+    "settings": {
+      "ass-lsp": {
+        "enable": true
+      }
+    }
+  },
+  "manual_setup_instructions": {
+    "step1": "Install the ASS LSP server: cargo install ass-lsp",
+    "step2": "Add the following to your VS Code settings.json:",
+    "settings_json": {
+      "files.associations": {
+        "*.ass": "ass",
+        "*.ssa": "ass"
+      },
+      "ass-lsp.enable": true,
+      "ass-lsp.path": "ass-lsp"
+    },
+    "step3": "If using a custom LSP client extension, configure it with:",
+    "lsp_config": {
+      "command": "ass-lsp",
+      "filetypes": ["ass", "ssa"],
+      "rootPatterns": [".git", ".root"]
+    }
+  }
+}

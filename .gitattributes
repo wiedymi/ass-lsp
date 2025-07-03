@@ -1,0 +1,153 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout
+*.rs text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.lua text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.fish text eol=lf
+*.zsh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Configuration files
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+*.lock text eol=lf -diff
+Cargo.lock text eol=lf -diff
+package-lock.json text eol=lf -diff
+yarn.lock text eol=lf -diff
+
+# Documentation
+README* text eol=lf
+LICENSE* text eol=lf
+CHANGELOG* text eol=lf
+CONTRIBUTING* text eol=lf
+AUTHORS* text eol=lf
+CREDITS* text eol=lf
+INSTALL* text eol=lf
+NEWS* text eol=lf
+TODO* text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Declare files that will always have LF line endings on checkout
+*.sh text eol=lf
+Makefile text eol=lf
+makefile text eol=lf
+
+# Denote all files that are truly binary and should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.bmp binary
+*.tiff binary
+*.webp binary
+
+# Binary documents
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.tar.gz binary
+*.tar.bz2 binary
+*.tar.xz binary
+*.gz binary
+*.bz2 binary
+*.xz binary
+*.7z binary
+*.rar binary
+
+# Executables
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.a binary
+*.lib binary
+*.out binary
+
+# Fonts
+*.ttf binary
+*.otf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+
+# Audio/Video
+*.mp3 binary
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.wav binary
+*.flac binary
+*.ogg binary
+*.webm binary
+
+# Other binary files
+*.dat binary
+*.bin binary
+*.dump binary
+*.sqlite binary
+*.sqlite3 binary
+*.db binary
+
+# Rust-specific attributes
+*.rs diff=rust
+Cargo.toml diff=toml
+Cargo.lock -diff
+
+# Linguist language detection
+*.rs linguist-language=Rust
+*.toml linguist-language=TOML
+*.md linguist-documentation
+*.txt linguist-documentation
+
+# Diff settings for specific files
+*.lock -diff
+*.min.js -diff
+*.min.css -diff
+
+# Merge settings
+*.generated merge=ours
+*.lock merge=ours
+
+# Export-ignore (files not included in git archive)
+.gitignore export-ignore
+.gitattributes export-ignore
+.github/ export-ignore
+.vscode/ export-ignore
+.idea/ export-ignore
+tests/ export-ignore
+examples/ export-ignore
+benches/ export-ignore
+docs/ export-ignore
+*.md export-ignore
