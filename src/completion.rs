@@ -12,32 +12,59 @@ impl CompletionProvider {
     pub fn new() -> Self {
         Self {
             override_tags: vec![
-                "\\pos", "\\move", "\\org", "\\clip", "\\iclip",
-                "\\fscx", "\\fscy", "\\fsp", "\\frx", "\\fry", "\\frz", "\\fr",
-                "\\fn", "\\fs", "\\fe", "\\b", "\\i", "\\u", "\\s",
-                "\\bord", "\\xbord", "\\ybord", "\\shad", "\\xshad", "\\yshad",
-                "\\c", "\\1c", "\\2c", "\\3c", "\\4c",
-                "\\alpha", "\\1a", "\\2a", "\\3a", "\\4a",
-                "\\an", "\\a", "\\q", "\\r", "\\t", "\\fad", "\\fade",
-                "\\p", "\\pbo", "\\k", "\\K", "\\kf", "\\ko"
+                "\\pos", "\\move", "\\org", "\\clip", "\\iclip", "\\fscx", "\\fscy", "\\fsp",
+                "\\frx", "\\fry", "\\frz", "\\fr", "\\fn", "\\fs", "\\fe", "\\b", "\\i", "\\u",
+                "\\s", "\\bord", "\\xbord", "\\ybord", "\\shad", "\\xshad", "\\yshad", "\\c",
+                "\\1c", "\\2c", "\\3c", "\\4c", "\\alpha", "\\1a", "\\2a", "\\3a", "\\4a", "\\an",
+                "\\a", "\\q", "\\r", "\\t", "\\fad", "\\fade", "\\p", "\\pbo", "\\k", "\\K",
+                "\\kf", "\\ko",
             ],
             script_info_keys: vec![
-                "Title", "ScriptType", "WrapStyle", "PlayResX", "PlayResY", 
-                "ScaledBorderAndShadow", "Video File", "Video Aspect Ratio",
-                "Video Zoom", "Video Position", "Last Style Storage",
-                "Audio File", "Video Zoom Percent", "Scroll Position",
-                "Active Line", "Video Position"
+                "Title",
+                "ScriptType",
+                "WrapStyle",
+                "PlayResX",
+                "PlayResY",
+                "ScaledBorderAndShadow",
+                "Video File",
+                "Video Aspect Ratio",
+                "Video Zoom",
+                "Video Position",
+                "Last Style Storage",
+                "Audio File",
+                "Video Zoom Percent",
+                "Scroll Position",
+                "Active Line",
+                "Video Position",
             ],
             style_fields: vec![
-                "Name", "Fontname", "Fontsize", "PrimaryColour", "SecondaryColour",
-                "OutlineColour", "BackColour", "Bold", "Italic", "Underline",
-                "StrikeOut", "ScaleX", "ScaleY", "Spacing", "Angle", "BorderStyle",
-                "Outline", "Shadow", "Alignment", "MarginL", "MarginR", "MarginV",
-                "Encoding"
+                "Name",
+                "Fontname",
+                "Fontsize",
+                "PrimaryColour",
+                "SecondaryColour",
+                "OutlineColour",
+                "BackColour",
+                "Bold",
+                "Italic",
+                "Underline",
+                "StrikeOut",
+                "ScaleX",
+                "ScaleY",
+                "Spacing",
+                "Angle",
+                "BorderStyle",
+                "Outline",
+                "Shadow",
+                "Alignment",
+                "MarginL",
+                "MarginR",
+                "MarginV",
+                "Encoding",
             ],
             event_fields: vec![
-                "Layer", "Start", "End", "Style", "Name", "MarginL", "MarginR",
-                "MarginV", "Effect", "Text"
+                "Layer", "Start", "End", "Style", "Name", "MarginL", "MarginR", "MarginV",
+                "Effect", "Text",
             ],
         }
     }
@@ -45,7 +72,7 @@ impl CompletionProvider {
     pub fn provide_completions(&self, text: &str, position: Position) -> Vec<CompletionItem> {
         let lines: Vec<&str> = text.lines().collect();
         let line_idx = position.line as usize;
-        
+
         if line_idx >= lines.len() {
             return Vec::new();
         }
@@ -75,15 +102,16 @@ impl CompletionProvider {
     fn determine_context(&self, text: &str, position: Position) -> CompletionContext {
         let lines: Vec<&str> = text.lines().collect();
         let line_idx = position.line as usize;
-        
+
         if line_idx >= lines.len() {
             return CompletionContext::None;
         }
 
         let current_line = lines[line_idx];
-        
+
         // Check if we're in an override tag
-        if current_line.contains('{') && !current_line[..position.character as usize].contains('}') {
+        if current_line.contains('{') && !current_line[..position.character as usize].contains('}')
+        {
             return CompletionContext::OverrideTags;
         }
 
@@ -231,7 +259,10 @@ impl CompletionProvider {
                 label: "Dialogue:".to_string(),
                 kind: Some(CompletionItemKind::FUNCTION),
                 detail: Some("Dialogue event".to_string()),
-                insert_text: Some("Dialogue: 0,${1:0:00:00.00},${2:0:00:05.00},${3:Default},,0,0,0,,${4:Text}".to_string()),
+                insert_text: Some(
+                    "Dialogue: 0,${1:0:00:00.00},${2:0:00:05.00},${3:Default},,0,0,0,,${4:Text}"
+                        .to_string(),
+                ),
                 insert_text_format: Some(InsertTextFormat::SNIPPET),
                 ..Default::default()
             },
@@ -239,7 +270,10 @@ impl CompletionProvider {
                 label: "Comment:".to_string(),
                 kind: Some(CompletionItemKind::FUNCTION),
                 detail: Some("Comment event".to_string()),
-                insert_text: Some("Comment: 0,${1:0:00:00.00},${2:0:00:05.00},${3:Default},,0,0,0,,${4:Comment}".to_string()),
+                insert_text: Some(
+                    "Comment: 0,${1:0:00:00.00},${2:0:00:05.00},${3:Default},,0,0,0,,${4:Comment}"
+                        .to_string(),
+                ),
                 insert_text_format: Some(InsertTextFormat::SNIPPET),
                 ..Default::default()
             },
@@ -272,7 +306,9 @@ impl CompletionProvider {
     fn get_tag_documentation(&self, tag: &str) -> String {
         match tag {
             "\\pos" => "\\pos(x,y) - Sets the position of the subtitle".to_string(),
-            "\\move" => "\\move(x1,y1,x2,y2,t1,t2) - Moves subtitle from (x1,y1) to (x2,y2)".to_string(),
+            "\\move" => {
+                "\\move(x1,y1,x2,y2,t1,t2) - Moves subtitle from (x1,y1) to (x2,y2)".to_string()
+            }
             "\\c" | "\\1c" => "\\c&Hbbggrr& - Sets the primary text color".to_string(),
             "\\b" => "\\b1 or \\b0 - Enable or disable bold formatting".to_string(),
             "\\i" => "\\i1 or \\i0 - Enable or disable italic formatting".to_string(),
@@ -297,7 +333,9 @@ impl CompletionProvider {
             "\\k" => "\\k${1:100}".to_string(),
             "\\t" => "\\t(${1:tags})".to_string(),
             "\\fad" => "\\fad(${1:100},${2:100})".to_string(),
-            "\\fade" => "\\fade(${1:255},${2:0},${3:255},${4:0},${5:500},${6:1000},${7:1500})".to_string(),
+            "\\fade" => {
+                "\\fade(${1:255},${2:0},${3:255},${4:0},${5:500},${6:1000},${7:1500})".to_string()
+            }
             _ => tag.to_string(),
         }
     }

@@ -1,5 +1,5 @@
-use tower_lsp::lsp_types::*;
 use regex::Regex;
+use tower_lsp::lsp_types::*;
 
 #[derive(Debug)]
 pub struct HoverProvider {
@@ -18,7 +18,7 @@ impl HoverProvider {
     pub fn provide_hover(&self, text: &str, position: Position) -> Option<Hover> {
         let lines: Vec<&str> = text.lines().collect();
         let line_idx = position.line as usize;
-        
+
         if line_idx >= lines.len() {
             return None;
         }
@@ -30,17 +30,14 @@ impl HoverProvider {
         let token = self.get_token_at_position(current_line, char_idx)?;
 
         // Determine what kind of token this is and provide appropriate hover info
-        if let Some(hover_content) = self.get_hover_content(&token, current_line) {
-            Some(Hover {
+        self.get_hover_content(&token, current_line)
+            .map(|hover_content| Hover {
                 contents: HoverContents::Scalar(MarkedString::String(hover_content)),
                 range: Some(Range {
                     start: Position::new(position.line, (char_idx - token.len()) as u32),
                     end: Position::new(position.line, char_idx as u32),
                 }),
             })
-        } else {
-            None
-        }
     }
 
     fn get_token_at_position(&self, line: &str, char_idx: usize) -> Option<String> {
@@ -159,8 +156,11 @@ impl HoverProvider {
             if let (Ok(hours), Ok(minutes)) = (parts[0].parse::<u32>(), parts[1].parse::<u32>()) {
                 let sec_parts: Vec<&str> = parts[2].split('.').collect();
                 if sec_parts.len() == 2 {
-                    if let (Ok(seconds), Ok(centiseconds)) = (sec_parts[0].parse::<u32>(), sec_parts[1].parse::<u32>()) {
-                        let total_ms = hours * 3600000 + minutes * 60000 + seconds * 1000 + centiseconds * 10;
+                    if let (Ok(seconds), Ok(centiseconds)) =
+                        (sec_parts[0].parse::<u32>(), sec_parts[1].parse::<u32>())
+                    {
+                        let total_ms =
+                            hours * 3600000 + minutes * 60000 + seconds * 1000 + centiseconds * 10;
                         return Some(format!(
                             "**Timestamp**\n\n`{}`\n\nTotal duration: {}ms\n{}h {}m {}s {}cs",
                             time, total_ms, hours, minutes, seconds, centiseconds
@@ -193,7 +193,10 @@ impl HoverProvider {
                 ));
             }
         }
-        Some(format!("**Color Value**\n\n`{}`\n\nASS color in BGR hexadecimal format", color))
+        Some(format!(
+            "**Color Value**\n\n`{}`\n\nASS color in BGR hexadecimal format",
+            color
+        ))
     }
 
     fn get_section_info(&self, section: &str) -> Option<String> {

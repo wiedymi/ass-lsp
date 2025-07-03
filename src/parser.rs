@@ -1,6 +1,6 @@
 use regex::Regex;
-use tower_lsp::lsp_types::*;
 use std::collections::HashMap;
+use tower_lsp::lsp_types::*;
 
 #[derive(Debug, Clone)]
 pub struct AssDocument {
@@ -64,7 +64,7 @@ impl AssParser {
 
         for (line_num, line) in lines.iter().enumerate() {
             let line = line.trim();
-            
+
             // Skip empty lines and comments
             if line.is_empty() || line.starts_with(';') {
                 continue;
@@ -80,7 +80,10 @@ impl AssParser {
                             start: Position::new(current_section_start as u32, 0),
                             end: Position::new(line_num as u32, 0),
                         },
-                        content: lines[current_section_start..line_num].iter().map(|s| s.to_string()).collect(),
+                        content: lines[current_section_start..line_num]
+                            .iter()
+                            .map(|s| s.to_string())
+                            .collect(),
                     });
                 }
 
@@ -122,7 +125,10 @@ impl AssParser {
                     start: Position::new(current_section_start as u32, 0),
                     end: Position::new(lines.len() as u32, 0),
                 },
-                content: lines[current_section_start..].iter().map(|s| s.to_string()).collect(),
+                content: lines[current_section_start..]
+                    .iter()
+                    .map(|s| s.to_string())
+                    .collect(),
             });
         }
 
@@ -145,7 +151,7 @@ impl AssParser {
     }
 
     fn parse_style(&self, line: &str, line_num: usize) -> Option<Style> {
-        let parts: Vec<&str> = line.splitn(2, ':').nth(1)?.split(',').collect();
+        let parts: Vec<&str> = line.split_once(':')?.1.split(',').collect();
         if parts.len() >= 4 {
             Some(Style {
                 name: parts[0].trim().to_string(),
@@ -164,9 +170,13 @@ impl AssParser {
     }
 
     fn parse_event(&self, line: &str, line_num: usize) -> Option<Event> {
-        let event_type = if line.starts_with("Dialogue:") { "Dialogue" } else { "Comment" };
-        let parts: Vec<&str> = line.splitn(2, ':').nth(1)?.split(',').collect();
-        
+        let event_type = if line.starts_with("Dialogue:") {
+            "Dialogue"
+        } else {
+            "Comment"
+        };
+        let parts: Vec<&str> = line.split_once(':')?.1.split(',').collect();
+
         if parts.len() >= 10 {
             Some(Event {
                 event_type: event_type.to_string(),
@@ -192,7 +202,7 @@ impl AssParser {
 
         for line in lines {
             let trimmed = line.trim();
-            
+
             // Section headers
             if self.section_regex.is_match(trimmed) {
                 if in_section {
@@ -224,7 +234,7 @@ impl AssParser {
 
             match section.name.as_str() {
                 "Script Info" => {
-                    for (key, _) in &document.script_info {
+                    for key in document.script_info.keys() {
                         children.push(DocumentSymbol {
                             name: key.clone(),
                             detail: None,
@@ -257,7 +267,10 @@ impl AssParser {
                             name: if event.actor.is_empty() {
                                 format!("{} - {}", event.start_time, event.end_time)
                             } else {
-                                format!("{}: {} - {}", event.actor, event.start_time, event.end_time)
+                                format!(
+                                    "{}: {} - {}",
+                                    event.actor, event.start_time, event.end_time
+                                )
                             },
                             detail: Some(event.text.chars().take(50).collect::<String>()),
                             kind: if event.event_type == "Dialogue" {
@@ -284,7 +297,11 @@ impl AssParser {
                 deprecated: None,
                 range: section.range,
                 selection_range: section.range,
-                children: if children.is_empty() { None } else { Some(children) },
+                children: if children.is_empty() {
+                    None
+                } else {
+                    Some(children)
+                },
             });
         }
 

@@ -1,6 +1,6 @@
+use crate::parser::{AssDocument, Event, Style};
 use regex::Regex;
 use tower_lsp::lsp_types::*;
-use crate::parser::{AssDocument, Event, Style};
 
 #[derive(Debug)]
 pub struct ValidationProvider {
@@ -127,7 +127,10 @@ impl ValidationProvider {
                 code: Some(NumberOrString::String("invalid_time_format".to_string())),
                 code_description: None,
                 source: Some("ass-lsp".to_string()),
-                message: format!("Invalid time format: {} (expected H:MM:SS.CC)", event.start_time),
+                message: format!(
+                    "Invalid time format: {} (expected H:MM:SS.CC)",
+                    event.start_time
+                ),
                 related_information: None,
                 tags: None,
                 data: None,
@@ -141,7 +144,10 @@ impl ValidationProvider {
                 code: Some(NumberOrString::String("invalid_time_format".to_string())),
                 code_description: None,
                 source: Some("ass-lsp".to_string()),
-                message: format!("Invalid time format: {} (expected H:MM:SS.CC)", event.end_time),
+                message: format!(
+                    "Invalid time format: {} (expected H:MM:SS.CC)",
+                    event.end_time
+                ),
                 related_information: None,
                 tags: None,
                 data: None,
@@ -184,8 +190,14 @@ impl ValidationProvider {
                     if brace_count == 0 {
                         diagnostics.push(Diagnostic {
                             range: Range {
-                                start: Position::new(range.start.line, range.start.character + i as u32),
-                                end: Position::new(range.start.line, range.start.character + i as u32 + 1),
+                                start: Position::new(
+                                    range.start.line,
+                                    range.start.character + i as u32,
+                                ),
+                                end: Position::new(
+                                    range.start.line,
+                                    range.start.character + i as u32 + 1,
+                                ),
                             },
                             severity: Some(DiagnosticSeverity::ERROR),
                             code: Some(NumberOrString::String("unmatched_brace".to_string())),
